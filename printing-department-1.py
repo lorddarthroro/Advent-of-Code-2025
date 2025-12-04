@@ -1,0 +1,46 @@
+array_2d = []
+count = 0
+
+with open('advent-of-code-2025/day-4/data/input.txt') as f:
+    for line in f:
+        array_2d.append(list(line.strip()))
+
+while True:
+    temp_count = count
+    indexes_to_remove = []
+
+    for i in range(len(array_2d)):
+        for j in range(len(array_2d[i])):
+
+            # Only consider @ cells
+            if array_2d[i][j] != "@":
+                continue
+
+            number_of_neighbors = 0
+
+            # Count neighbors
+            for di in [-1, 0, 1]:
+                for dj in [-1, 0, 1]:
+                    if di == 0 and dj == 0:
+                        continue
+
+                    ni, nj = i + di, j + dj
+
+                    if 0 <= ni < len(array_2d) and 0 <= nj < len(array_2d[0]):
+                        if array_2d[ni][nj] == "@":
+                            number_of_neighbors += 1
+
+            # If not enough neighbors → mark THIS cell for removal
+            if number_of_neighbors < 4:
+                indexes_to_remove.append((i, j))
+                count += 1
+
+    # Remove all marked cells at once
+    for i, j in indexes_to_remove:
+        array_2d[i][j] = "."
+
+    # Stop if stable (nobody removed)
+    if count == temp_count:
+        break
+
+print(count)
