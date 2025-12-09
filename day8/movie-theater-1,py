@@ -1,0 +1,26 @@
+import math
+def manhattan_distance(x, y):
+    return abs(x[0] - y[0]) + abs(x[1] - y[1])
+
+red_tiles = []
+with open('advent-of-code-2025/day-9/data/input.txt', 'r') as f:  
+    for line in f:
+        numbers =line.strip().split(',')
+        red_tiles.append((int(numbers[0]), int(numbers[1])))
+
+def find_biggest_area_p1(red_tiles):
+    biggest_distance = 0
+    furthest_pair = None
+
+    for tile in red_tiles:
+        for tile2 in red_tiles:
+            if manhattan_distance(tile, tile2) > biggest_distance:
+                biggest_distance = manhattan_distance(tile, tile2)
+                furthest_pair = (tile, tile2)
+                
+    length = abs(furthest_pair[0][0] - furthest_pair[1][0]) + 1
+    width = abs(furthest_pair[0][1] - furthest_pair[1][1]) + 1
+    area = abs(length * width)
+    return area
+
+print(find_biggest_area_p1(red_tiles))
